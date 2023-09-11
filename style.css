@@ -95,11 +95,20 @@ h2::before {
     top: 0px;
 }
 
+h2.up, h2.down {
+    cursor: pointer;
+}
+
+h2.up:hover, h2.down:hover {
+    color: var(--red);
+}
+
 h2.up::before {
     content: "▶ ";
     position: relative;
     left: 0px;
     top: 0px;
+    cursor: pointer;
 }
 
 h2.down::before {
@@ -107,6 +116,7 @@ h2.down::before {
     position: relative;
     left: 0px;
     top: 0px;
+    cursor: pointer;
 }
 
 h2 {
