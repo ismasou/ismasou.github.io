@@ -318,3 +318,16 @@ function importAuthorList(element){
     fr.readAsText(files.item(0));
 
 }
+
+
+function showSubs(el){
+
+    let subDiv = document.getElementById("subscriptions");
+    if(subDiv.style.display == "block"){
+        subDiv.style.display = "none";
+        el.className = "up";
+        return;
+    }
+    el.className = "down";
+    subDiv.style.display = "block";
+}

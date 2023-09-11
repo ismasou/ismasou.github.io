@@ -94,6 +94,21 @@ h2::before {
     left: 0px;
     top: 0px;
 }
+
+h2.up::before {
+    content: "▶ ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+
+h2.down::before {
+    content: "▼ ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+
 h2 {
     color: var(--blue);
     position: relative;
