@@ -417,7 +417,6 @@ function searchAll() {
 
 searchAll();
 
-
 function exportAuthorList(element){
     let isCollab = document.getElementById("collab").checked;
     if (isCollab) {
@@ -432,7 +431,6 @@ function exportAuthorList(element){
     // element.setAttribute('download', 'authors.json');
     }
 }
-
 
 function importAuthorList(element){
     let files = document.getElementById('selectFiles').files;
@@ -455,7 +453,6 @@ function importAuthorList(element){
     fr.readAsText(files.item(0));
 
 }
-
 
 function showSubs(el){
 

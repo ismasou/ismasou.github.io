@@ -154,6 +154,7 @@ h4 {
 }
 
 input[type=checkbox]:hover, label:hover {
+    color: var(--red);
   background-color: var(--bg-highlight);
   content: "• (×) ";
   cursor: pointer;
