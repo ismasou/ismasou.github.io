@@ -187,6 +187,14 @@ function listPapers(hits) {
             paperDate = dateNew;
         }
 
+        // Check Collaboration
+        let IsCollab = false;
+        let Collaboration = "";
+        if (hits[i]["metadata"]["accelerator_experiments"] != undefined) {
+            IsCollab = true;
+            Collaboration = hits[i]["metadata"]["accelerator_experiments"][0]["legacy_name"];
+        }
+
         const meta = hits[i]["metadata"];
         const title = meta["titles"][0]["title"];
         const autho = meta["authors"];
@@ -199,6 +207,14 @@ function listPapers(hits) {
         const id = hits[i]["id"];
         titleA.href = `https://inspirehep.net/literature/${id}`;
         titleA.innerHTML = title;
+        if (IsCollab) {
+            const authoA = document.createElement("a");
+            authoA.className = "sub";
+            authoA.innerHTML = Collaboration;
+            authoA.href = `https://inspirehep.net/search?p=collaboration%3A%22${Collaboration}%22`;
+            authoP.appendChild(authoA);
+            authoP.innerHTML += "   |   ";
+        }
         let skip = false;
         if (autho.length > 10) {
             skip = true;
