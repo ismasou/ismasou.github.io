@@ -17,12 +17,26 @@ function listSubs() {
     for (let i = 0; i < authorList.length; i++) {
         const subLI = document.createElement("li");
         const suba = document.createElement("a");
+        const del = document.createElement("a");
+        del.innerHTML = "X";
+        del.className = "delete";
+        del.onclick = function () {
+            authorList = authorList.filter((ele) => {
+                return ele["control_number"] != authorList[i]["control_number"];
+            });
+            localStorage.setItem("authorList", JSON.stringify(authorList));
+            paperList = [];
+            listSubs();
+        };
         suba.innerHTML = authorList[i]["name"]["preferred_name"];
         suba.href = `https://inspirehep.net/authors/${authorList[i]["control_number"]}`;
         subLI.appendChild(suba);
+        subLI.innerHTML += "   |   ";
+        subLI.appendChild(del);
         subUl.appendChild(subLI);
     }
     subDiv.appendChild(subUl);
+    searchAll();
 }
 
 listSubs();
@@ -311,8 +325,6 @@ function importAuthorList(element){
         authorList = result;
         localStorage.setItem("authorList", JSON.stringify(authorList));
         listSubs();
-        searchAll();
-
     }
 
     fr.readAsText(files.item(0));
