@@ -4,10 +4,15 @@
 let lock = false;
 
 let authorList = JSON.parse(localStorage.getItem("authorList"));
+let collabList = JSON.parse(localStorage.getItem("collabList"));
 
 if (authorList == null) {
     authorList = [];
 }
+if (collabList == null) {
+    collabList = [];
+}
+
 let paperList = [];
 
 function listSubs() {
@@ -35,7 +40,29 @@ function listSubs() {
         subLI.appendChild(del);
         subUl.appendChild(subLI);
     }
+    for (let i = 0; i < collabList.length; i++) {
+        const subLI = document.createElement("li");
+        const suba = document.createElement("a");
+        const del = document.createElement("a");
+        del.innerHTML = "X";
+        del.className = "delete";
+        del.onclick = function () {
+            collabList = collabList.filter((ele) => {
+                return ele["control_number"] != collabList[i]["control_number"];
+            });
+            localStorage.setItem("collabList", JSON.stringify(collabList));
+            paperList = [];
+            listSubs();
+        };
+        suba.innerHTML = collabList[i]["collaboration"]["value"];
+        suba.href = `https://inspirehep.net/search?p=collaboration%3A${collabList[i]["collaboration"]["value"]}`;
+        subLI.appendChild(suba);
+        subLI.innerHTML += "   |   ";
+        subLI.appendChild(del);
+        subUl.appendChild(subLI);
+    }
     subDiv.appendChild(subUl);
+
     searchAll();
 }
 
@@ -71,6 +98,37 @@ function addAuthor(author) {
     listSubs();
 }
 
+function addCollaboration(collab) {
+
+    const id = collab["control_number"];
+    console.log(collabList);
+    let notThere = true;
+    for (let i = 0; i < collabList.length; i++) {
+        const id1 = collabList[i]["control_number"];
+        if (id1 == id) {
+            notThere = false;
+            break;
+        }
+    }
+    if (notThere) {
+        collabList.push(collab);
+    }
+
+    collabList.sort((a, b) => {
+        const nameA = a["collaboration"]["value"];
+        const nameB = b["collaboration"]["value"];
+        if (nameA > nameB) {
+            return 1;
+        } else if (nameA == nameB) {
+            return 0;
+        } else {
+            return -1;
+        }
+    });
+    localStorage.setItem("collabList", JSON.stringify(collabList));
+    listSubs();
+}
+
 function searchUrl(authorId) {
     return `https://inspirehep.net/api/{literature}?{q=author:${authorId}}`;
 }
@@ -100,13 +158,47 @@ function listAuthors(data) {
 }
 
 function searchAuthor() {
+    if (document.getElementById("collab").checked) {
+    const experimentName = document.getElementById("authorSearch").value;
+    const response = fetch(`https://inspirehep.net/api/experiments?q=${experimentName}`)
+        .then((response) => response.json())
+        .then((json) => listExperiments(json));
+    } else {
     const authorName = document.getElementById("authorSearch").value;
-    let data;
     const response = fetch(`https://inspirehep.net/api/authors?q=${authorName}`)
         .then((response) => response.json())
         .then((json) => listAuthors(json));
-    return data;
+    }
+    return ;
 }
+
+function listExperiments(data) {
+    const hits = data["hits"]["hits"];
+    const authorDiv = document.getElementById("authorRes");
+    const authorUl = document.createElement("ul");
+    authorDiv.innerHTML = "";
+
+    for (let i = 0; i < hits.length; i++) {
+        console.log(hits[i]);
+        if (hits[i]["metadata"]["collaboration"] == undefined) {
+            continue;
+        }
+        const meta = hits[i]["metadata"]["collaboration"]["value"];
+        const id = hits[i]["metadata"]["control_number"];
+        const LI = document.createElement("li");
+        const a = document.createElement("a");
+        a.innerHTML = meta;
+        LI.id = id;
+        LI.className = "author";
+        a.onclick = function () {
+            addCollaboration(hits[i]["metadata"]);
+        };
+        LI.appendChild(a);
+        authorUl.appendChild(LI);
+    }
+    authorDiv.appendChild(authorUl);
+}
+
 
 // Get the input field
 var input = document.getElementById("authorSearch");
@@ -211,8 +303,6 @@ function listPapers(hits) {
 
         const meta = hits[i]["metadata"];
         const title = meta["titles"][0]["title"];
-        const autho = meta["authors"];
-        // const id = hits[i]["metadata"]["ids"][0]["value"];
         const LI = document.createElement("li");
         const authoP = document.createElement("p");
         authoP.className = "authors";
@@ -229,28 +319,33 @@ function listPapers(hits) {
             authoP.appendChild(authoA);
             authoP.innerHTML += "   |   ";
         }
-        let skip = false;
-        if (autho.length > 10) {
-            skip = true;
-        }
-        let ni = 0;
-        autho.forEach((element) => {
-            let IsSub = checkForSub(element);
-            if (skip && !IsSub && ni > 10) {
-                return;
+
+        if(meta["author_count"] > 0){
+            const autho = meta["authors"];
+            // const id = hits[i]["metadata"]["ids"][0]["value"];
+            let skip = false;
+            if (autho.length > 10) {
+                skip = true;
             }
-            ni++;
-            const authoA = document.createElement("a");
-            if (IsSub) {
-                authoA.className = "sub";
+            let ni = 0;
+            autho.forEach((element) => {
+                let IsSub = checkForSub(element);
+                if (skip && !IsSub && ni > 10) {
+                    return;
+                }
+                ni++;
+                const authoA = document.createElement("a");
+                if (IsSub) {
+                    authoA.className = "sub";
+                }
+                authoA.innerHTML = element["full_name"];
+                authoA.href = `https://inspirehep.net/authors/${element["recid"]}`;
+                authoP.appendChild(authoA);
+                authoP.innerHTML += "   |   ";
+            });
+            if(skip){
+                authoP.innerHTML += "More...";
             }
-            authoA.innerHTML = element["full_name"];
-            authoA.href = `https://inspirehep.net/authors/${element["recid"]}`;
-            authoP.appendChild(authoA);
-            authoP.innerHTML += "   |   ";
-        });
-        if(skip){
-            authoP.innerHTML += "More...";
         }
         LI.appendChild(titleA);
         LI.appendChild(authoP);
@@ -291,21 +386,40 @@ function searchPaper(author) {
         .then((json) => addPaper(json));
 }
 
+function searchPaperCollab(collab) {
+    const response = fetch(
+        `https://inspirehep.net/api/literature?sort=mostrecent&size=5&page=1&q=collaboration%3A${collab["collaboration"]["value"]}`
+    )
+        .then((response) => response.json())
+        .then((json) => addPaper(json));
+}
+
 function searchAll() {
     authorList.forEach((ele) => {
         searchPaper(ele);
     });
+    collabList.forEach((ele) => {
+        searchPaperCollab(ele);
+    });
+
 }
 
 searchAll();
 
 
 function exportAuthorList(element){
+    let isCollab = document.getElementById("collab").checked;
+    if (isCollab) {
+        let collab= JSON.stringify(collabList, null, 2);
+        // download
+        location.href = 'data:application/octet-stream,' + encodeURIComponent(collab);
+    } else {
     let authors = JSON.stringify(authorList, null, 2);
     // download
     location.href = 'data:application/octet-stream,' + encodeURIComponent(authors);
     // element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(authors));
     // element.setAttribute('download', 'authors.json');
+    }
 }
 
 
@@ -335,6 +449,18 @@ function importAuthorList(element){
 function showSubs(el){
 
     let subDiv = document.getElementById("subscriptions");
+    if(subDiv.style.display == "block"){
+        subDiv.style.display = "none";
+        el.className = "up";
+        return;
+    }
+    el.className = "down";
+    subDiv.style.display = "block";
+}
+
+function showSearch(el){
+
+    let subDiv = document.getElementById("authorSearch");
     if(subDiv.style.display == "block"){
         subDiv.style.display = "none";
         el.className = "up";
