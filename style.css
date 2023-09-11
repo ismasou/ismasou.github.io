@@ -153,7 +153,7 @@ h4 {
     padding: 0.5em 0;
 }
 
-input[type=checkbox]:hover + label:before {
+input[type=checkbox]:hover, label:hover {
   background-color: var(--bg-highlight);
   content: "• (×) ";
   cursor: pointer;
