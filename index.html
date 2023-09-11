@@ -6,6 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Inspire News</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Make Mathjax use single dollar signs -->
+    <script type="text/javascript">
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+        },
+        jax: ["input/TeX", "output/SVG"],
+      };
+    </script>
     <!-- <script type="text/javascript" id="MathJax-script" async -->
     <!--     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> -->
     <!-- </script> -->
@@ -29,7 +40,7 @@
       <br>
       <input type="checkbox" id="collab" name="collab" value="collab">
       <label for="collab">Collaboration</label><br>
-      <input type="text" id="authorSearch">
+      <input type="text" id="authorSearchField">
       <button onclick="searchAuthor()">Search</button>
       <div id = "authorRes" > 
     </div></div></div>

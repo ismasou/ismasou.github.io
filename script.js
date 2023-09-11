@@ -1,6 +1,7 @@
 // localStorage.setItem("authorList",
 //     JSON.stringify([]))
 
+
 let lock = false;
 
 let authorList = JSON.parse(localStorage.getItem("authorList"));
@@ -159,15 +160,16 @@ function listAuthors(data) {
 
 function searchAuthor() {
     if (document.getElementById("collab").checked) {
-    const experimentName = document.getElementById("authorSearch").value;
-    const response = fetch(`https://inspirehep.net/api/experiments?q=${experimentName}`)
-        .then((response) => response.json())
-        .then((json) => listExperiments(json));
+        const experimentName = document.getElementById("authorSearchField").value;
+        console.log(experimentName);
+        const response = fetch(`https://inspirehep.net/api/experiments?q=${experimentName}`)
+            .then((response) => response.json())
+            .then((json) => listExperiments(json));
     } else {
-    const authorName = document.getElementById("authorSearch").value;
-    const response = fetch(`https://inspirehep.net/api/authors?q=${authorName}`)
-        .then((response) => response.json())
-        .then((json) => listAuthors(json));
+        const authorName = document.getElementById("authorSearchField").value;
+        const response = fetch(`https://inspirehep.net/api/authors?q=${authorName}`)
+            .then((response) => response.json())
+            .then((json) => listAuthors(json));
     }
     return ;
 }
@@ -178,8 +180,16 @@ function listExperiments(data) {
     const authorUl = document.createElement("ul");
     authorDiv.innerHTML = "";
 
+    console.log(hits.length);
+    if (hits.length == 0) {
+        const LI = document.createElement("li");
+        LI.innerHTML = "No Results";
+        authorUl.appendChild(LI);
+        authorDiv.appendChild(authorUl);
+        return;
+    }
+
     for (let i = 0; i < hits.length; i++) {
-        console.log(hits[i]);
         if (hits[i]["metadata"]["collaboration"] == undefined) {
             continue;
         }
@@ -198,7 +208,6 @@ function listExperiments(data) {
     }
     authorDiv.appendChild(authorUl);
 }
-
 
 // Get the input field
 var input = document.getElementById("authorSearch");
@@ -352,6 +361,9 @@ function listPapers(hits) {
         authorUl.appendChild(LI);
     }
     authorDiv.appendChild(authorUl);
+    if (MathJax != undefined) {
+        MathJax.typeset();
+    }
 }
 
 function checkForSub(author) {
@@ -363,7 +375,6 @@ function checkForSub(author) {
     });
     return IsSub;
 }
-
 
 function searchPaper(author) {
     const authorIds = author["ids"];
