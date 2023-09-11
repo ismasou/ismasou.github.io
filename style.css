@@ -1,0 +1,198 @@
+@import './colors.css';
+
+
+/*
+  Select font from folders 
+  */
+@font-face {
+    font-family: 'Fira Code';
+    src: url('./FiraCode/Fira\ Code\ Retina\ Nerd\ Font\ Complete.ttf') format('truetype'); 
+}
+
+* {
+    font-family: 'Fira Code';
+}
+
+button {
+    color: var(--cyan);
+    background-color: var(--blue7);
+    font-family: 'Fira Code';
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.2em 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    color: var(--blue5);
+    background-color: var(--blue);
+
+}
+button:active {
+    color: var(--fg);
+    background-color: var(--blue6);
+}
+
+.sub {
+    background-color: var(--bg-highlight);
+}
+
+input[type=text] {
+    background-color: var(--bg-highlight);
+    color: var(--fg);
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.2em 1em;
+    font-family: 'Fira Code';
+}
+
+body {
+    background-color: var(--bg-dark) !important;
+    color: var(--fg-dark);
+    display: grid;
+}
+
+.subscriptions {
+    grid-row: 2;
+    grid-column: 2;
+}
+.authorSearch{
+    grid-row: 2;
+    grid-column: 1;
+}
+.papers{
+    grid-row: 4;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.papertitle{
+    font-size: 1.5em;
+}
+
+.authors {
+    padding: 1em 2em 2em 3em;
+}
+
+
+h1::before {
+    content: "◉ ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+h1 {
+    color: var(--cyan);
+    position: relative;
+    font-size: 2em;
+    margin: 0.5em 0;
+    padding: 0.5em 0;
+}
+
+h2::before {
+    content: "◉ ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+h2 {
+    color: var(--blue);
+    position: relative;
+    font-size: 1.5em;
+    margin: 0.5em 0;
+    padding: 0.5em 0;
+}
+h3::before {
+    content: "○ ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+h3 {
+    color: var(--magenta);
+    position: relative;
+    font-size: 1.2em;
+    margin: 0.5em 0;
+    padding: 0.5em 0;
+}
+h4::before {
+    content: "✺ ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+h4 {
+    color: var(--green);
+    position: relative;
+    font-size: 1.1em;
+    margin: 0.5em 0;
+    padding: 0.5em 0;
+}
+
+input[type=checkbox]:hover + label:before {
+  background-color: var(--bg-highlight);
+  content: "• (×) ";
+  cursor: pointer;
+}
+
+input[type=checkbox] + label:before {
+  color: var(--cyan);
+  content: "• (×) ";
+}
+
+input[type=checkbox]:checked + label:before {
+  color: var(--cyan);
+  content: "• () ";
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+a {
+    color: var(--blue); /* sets the color of the link */
+    text-decoration: none; 
+    /* removes the underline */
+}
+
+a:hover {
+    color: var(--red); /* changes the color of the link when hovered over */
+    text-decoration: underline;
+    cursor: pointer;
+    /* adds an underline when hovered over */
+}
+
+a:active {
+    color: var(--red); /* changes the color of the link when hovered over */
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: var(--fg-gutter);
+    /* adds an underline when hovered over */
+}
+
+b::before {
+    color: var(--cyan);
+    content: "• ";
+    position: relative;
+    left: 0px;
+    top: 0px;
+}
+p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+span {
+    margin-left: 2.5em;
+}
+ul{
+    list-style-type: none;
+}
+ul li::before{
+    color: var(--cyan);
+    content: '• ';
+}
+
+hr {
+    color: var(--blue5);
+    /* Thickness */
+    border-top-width: 0.1em;
+}

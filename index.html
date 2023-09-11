@@ -1,7 +1,42 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Inspire News</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <script type="text/javascript" id="MathJax-script" async -->
+    <!--     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> -->
+    <!-- </script> -->
+  </head>
+  <body>
+    <h1>Inspire News</h1>
+
+    <div class="subscriptions" >
+    <h2>Subscriptions</h2>
+    <div id = "subscriptions">
+    </div>
+    </div>
+
+    <div class="authorSearch">
+      <h2>Author Search</h2>
+      <input type="file" id="selectFiles" value="Import" />
+      <button id="importAuthorList" onclick="importAuthorList(this)">Import</button>
+      <button onclick="exportAuthorList(this)">Export</button>
+      <br>
+      <br>
+      <input type="text" id="authorSearch">
+      <button onclick="searchAuthor()">Search</button>
+
+    <div id = "authorRes" > 
+    </div></div>
+
+    <div class="papers">
+        <h2>Recent Papers</h2>
+        <div id = "papers">
+        </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
 </html>
