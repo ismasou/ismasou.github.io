@@ -283,6 +283,7 @@ function listPapers(hits) {
     const authorDiv = document.getElementById("papers");
     const authorUl = document.createElement("ul");
     authorDiv.innerHTML = "";
+    authorUl.style = "display: grid;";
 
     let paperDate = new Date();
     paperDate.setHours(0, 0, 0, 0);
@@ -298,7 +299,9 @@ function listPapers(hits) {
         if (dateNew < paperDate) {
             const Today = document.createElement("h3");
             Today.innerHTML = dateNew.toDateString();
+            Today.style = "grid-column: 1;";
             authorUl.appendChild(Today);
+            authorUl.appendChild(document.createElement("br"));
             paperDate = dateNew;
         }
 
@@ -358,6 +361,17 @@ function listPapers(hits) {
         }
         LI.appendChild(titleA);
         LI.appendChild(authoP);
+        const hideAuthor = document.getElementById("showAuthor").checked;
+        const hideCollab = document.getElementById("showCollab").checked;
+        if(IsCollab){
+            LI.style = "grid-column: 2;"
+            LI.className = "collabPapers";
+            LI.style.display = hideCollab ? "block" : "none";
+        } else {
+            LI.style = "grid-column: 1;"
+            LI.className = "authorPapers";
+            LI.style.display = hideAuthor ? "block" : "none";
+        }
         authorUl.appendChild(LI);
     }
     authorDiv.appendChild(authorUl);
@@ -412,6 +426,9 @@ function searchAll() {
     collabList.forEach((ele) => {
         searchPaperCollab(ele);
     });
+
+    hideAuthor(document.getElementById("showAuthor"));
+    hideCollab(document.getElementById("showCollab"));
 
 }
 
@@ -476,4 +493,23 @@ function showSearch(el){
     }
     el.className = "down";
     subDiv.style.display = "block";
+}
+
+
+function hideAuthor(el){
+    let ShowAuthor = el.checked;
+    const authorPapers = document.getElementsByClassName("authorPapers");
+    for (let i = 0; i < authorPapers.length; i++) {
+        const element = authorPapers[i];
+        element.style.display = ShowAuthor ? "block" : "none";
+    }
+}
+
+function hideCollab(el){
+    let ShowCollab = el.checked;
+    const collabPapers = document.getElementsByClassName("collabPapers");
+    for (let i = 0; i < collabPapers.length; i++) {
+        const element = collabPapers[i];
+        element.style.display = ShowCollab ? "block" : "none";
+    }
 }
