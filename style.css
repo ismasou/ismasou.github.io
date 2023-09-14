@@ -195,6 +195,10 @@ a:active {
     /* adds an underline when hovered over */
 }
 
+a:visited {
+    color: var(--green);
+}
+
 b::before {
     color: var(--cyan);
     content: "• ";
