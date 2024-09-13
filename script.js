@@ -290,8 +290,10 @@ function listPapers(hits) {
 
     const Today = document.createElement("h3");
     Today.innerHTML = "Today";
-    authorDiv.appendChild(Today);
-
+    Today.style = "grid-column-start: 1; grid-column-end: 3;";
+    authorUl.appendChild(Today);
+    authorUl.appendChild(document.createElement("br"));
+    
     for (let i = 0; i < hits.length; i++) {
         // console.log(hits[i]);
         let dateNew = new Date(hits[i]["created"]);
@@ -299,7 +301,7 @@ function listPapers(hits) {
         if (dateNew < paperDate) {
             const Today = document.createElement("h3");
             Today.innerHTML = dateNew.toDateString();
-            Today.style = "grid-column: 1;";
+            Today.style = "grid-column-start: 1; grid-column-end: 3;";
             authorUl.appendChild(Today);
             authorUl.appendChild(document.createElement("br"));
             paperDate = dateNew;
