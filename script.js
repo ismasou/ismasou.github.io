@@ -1,5 +1,4 @@
 // State management
-let lock = false;
 let authorList = JSON.parse(localStorage.getItem("authorList")) || [];
 let collabList = JSON.parse(localStorage.getItem("collabList")) || [];
 let readingList = JSON.parse(localStorage.getItem("readingList")) || [];
@@ -309,20 +308,6 @@ if (input) {
 // ==========================================================================
 
 function addPaper(data, isFromCollab = false, collabName = "") {
-    let n = 0;
-    while (lock) {
-        setTimeout(10);
-        n++;
-        if (n > 10) {
-            console.log("Timeout");
-            pendingRequests--;
-            checkLoadingComplete();
-            return;
-        }
-    }
-
-    lock = true;
-
     const Today = new Date();
     const Papers = data["hits"]["hits"];
     
@@ -335,23 +320,17 @@ function addPaper(data, isFromCollab = false, collabName = "") {
             continue;
         }
         
-        let existingIndex = -1;
-        for (let i = 0; i < paperList.length; i++) {
-            if (paperList[i]["id"] == id) {
-                existingIndex = i;
-                break;
-            }
-        }
+        let existingIndex = paperList.findIndex(p => p["id"] == id);
         
         if (existingIndex === -1) {
             // New paper - add with collab info if from collab search
-            const paperEntry = Papers[j];
+            const paperEntry = { ...Papers[j] };
             if (isFromCollab) {
                 paperEntry._isFromCollab = true;
                 paperEntry._collabName = collabName;
             }
             paperList.push(paperEntry);
-        } else if (isFromCollab) {
+        } else if (isFromCollab && !paperList[existingIndex]._isFromCollab) {
             // Paper exists but mark it as also from collab
             paperList[existingIndex]._isFromCollab = true;
             paperList[existingIndex]._collabName = collabName;
@@ -365,7 +344,6 @@ function addPaper(data, isFromCollab = false, collabName = "") {
     });
 
     listPapers(paperList);
-    lock = false;
     
     pendingRequests--;
     checkLoadingComplete();
