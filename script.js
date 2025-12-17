@@ -1213,19 +1213,15 @@ function handleKeyboardNavigation(event) {
             }
             break;
             
-        case 'g': // Go to top (gg in vim, but single g for simplicity)
+        case 'g': // Go to top/bottom
             event.preventDefault();
-            selectPaper(0);
-            break;
-            
-        case 'shift': // Ignore modifier keys
-            break;
-            
-        case 'g': // G goes to bottom when shift is pressed
             if (event.shiftKey) {
-                event.preventDefault();
+                // G (shift+g) goes to last paper
                 updateVisiblePapers();
                 selectPaper(visiblePapers.length - 1);
+            } else {
+                // g goes to first paper
+                selectPaper(0);
             }
             break;
             
