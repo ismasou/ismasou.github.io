@@ -606,18 +606,88 @@ input[type=text]::placeholder {
 }
 
 .papers-grid {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.papers-grid h3 {
-    margin-top: 1rem;
+/* Day section with date header and two columns */
+.day-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.papers-grid h3:first-child {
-    margin-top: 0;
+.day-section > h3 {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--fg-gutter);
 }
 
-/* ul-based grid for papers */
+.day-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.author-column,
+.collab-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.author-column .paper-card {
+    border-left-color: var(--blue0);
+}
+
+.author-column .paper-card:hover {
+    border-left-color: var(--cyan);
+}
+
+.collab-column .paper-card {
+    border-left-color: var(--magenta);
+}
+
+.collab-column .paper-card:hover {
+    border-left-color: var(--magenta);
+}
+
+.author-column.hidden,
+.collab-column.hidden {
+    display: none;
+}
+
+/* When one column is hidden, make the other full width */
+.day-columns:has(.author-column.hidden) {
+    grid-template-columns: 0 1fr;
+}
+
+.day-columns:has(.collab-column.hidden) {
+    grid-template-columns: 1fr 0;
+}
+
+.day-columns:has(.author-column.hidden):has(.collab-column.hidden) {
+    display: none;
+}
+
+@media (max-width: 1100px) {
+    .papers-columns-header {
+        display: none;
+    }
+    
+    .day-columns {
+        grid-template-columns: 1fr;
+    }
+    
+    .day-columns:has(.author-column.hidden),
+    .day-columns:has(.collab-column.hidden) {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Legacy ul-based grid - keeping for compatibility */
 .papers-grid > ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -642,21 +712,6 @@ input[type=text]::placeholder {
 
 .papers-grid > ul > li.hidden {
     display: none;
-}
-
-@media (max-width: 1100px) {
-    .papers-columns-header {
-        display: none;
-    }
-    
-    .papers-grid > ul {
-        grid-template-columns: 1fr;
-    }
-    
-    .papers-grid > ul > li.authorPapers,
-    .papers-grid > ul > li.collabPapers {
-        grid-column: 1;
-    }
 }
 
 /* Paper Cards */

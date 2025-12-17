@@ -363,9 +363,8 @@ function checkLoadingComplete() {
 }
 
 function listPapers(hits) {
-    const authorDiv = document.getElementById("papers");
-    const authorUl = document.createElement("ul");
-    authorDiv.innerHTML = "";
+    const papersContainer = document.getElementById("papers");
+    papersContainer.innerHTML = "";
 
     if (hits.length === 0) {
         return;
@@ -373,121 +372,175 @@ function listPapers(hits) {
     
     showPapers();
 
-    let paperDate = new Date();
-    paperDate.setHours(0, 0, 0, 0);
-
-    const Today = document.createElement("h3");
-    Today.innerHTML = "Today";
-    authorUl.appendChild(Today);
+    // Group papers by date
+    const papersByDate = {};
     
-    for (let i = 0; i < hits.length; i++) {
-        let dateNew = new Date(hits[i]["created"]);
-        dateNew.setHours(0, 0, 0, 0);
+    hits.forEach(paper => {
+        const dateObj = new Date(paper["created"]);
+        dateObj.setHours(0, 0, 0, 0);
+        const dateKey = dateObj.toISOString().split('T')[0];
         
-        if (dateNew < paperDate) {
-            const DateHeader = document.createElement("h3");
-            DateHeader.innerHTML = dateNew.toDateString();
-            authorUl.appendChild(DateHeader);
-            paperDate = dateNew;
-        }
-
-        // Check Collaboration - use our flag or fall back to metadata
-        let IsCollab = false;
-        let Collaboration = "";
-        
-        if (hits[i]._isFromCollab) {
-            IsCollab = true;
-            Collaboration = hits[i]._collabName;
-        } else if (hits[i]["metadata"]["accelerator_experiments"] != undefined) {
-            IsCollab = true;
-            Collaboration = hits[i]["metadata"]["accelerator_experiments"][0]["legacy_name"];
-        }
-
-        const meta = hits[i]["metadata"];
-        const title = meta["titles"][0]["title"];
-        const LI = document.createElement("li");
-        
-        // Paper header with title and bookmark button
-        const headerDiv = document.createElement("div");
-        headerDiv.className = "paper-header";
-        
-        const titleA = document.createElement("a");
-        titleA.className = "papertitle";
-        const id = hits[i]["id"];
-        titleA.href = `https://inspirehep.net/literature/${id}`;
-        titleA.target = "_blank";
-        titleA.innerHTML = title;
-        
-        // Add bookmark button
-        const bookmarkBtn = createBookmarkButton(hits[i]);
-        
-        headerDiv.appendChild(titleA);
-        headerDiv.appendChild(bookmarkBtn);
-        
-        const authoP = document.createElement("p");
-        authoP.className = "authors";
-        
-        if (IsCollab) {
-            const authoA = document.createElement("a");
-            authoA.className = "sub";
-            authoA.innerHTML = Collaboration;
-            authoA.href = `https://inspirehep.net/search?p=collaboration%3A%22${Collaboration}%22`;
-            authoA.target = "_blank";
-            authoP.appendChild(authoA);
-        }
-
-        if (meta["author_count"] > 0) {
-            const autho = meta["authors"];
-            let skip = autho.length > 10;
-            let ni = 0;
-            
-            autho.forEach((element) => {
-                let IsSub = checkForSub(element);
-                if (skip && !IsSub && ni > 10) {
-                    return;
-                }
-                ni++;
-                
-                const authoA = document.createElement("a");
-                if (IsSub) {
-                    authoA.className = "sub";
-                }
-                authoA.innerHTML = element["full_name"];
-                authoA.href = `https://inspirehep.net/authors/${element["recid"]}`;
-                authoA.target = "_blank";
-                authoP.appendChild(authoA);
-            });
-            
-            if (skip) {
-                const moreSpan = document.createElement("span");
-                moreSpan.className = "more-authors";
-                moreSpan.innerHTML = "...and more";
-                authoP.appendChild(moreSpan);
-            }
+        if (!papersByDate[dateKey]) {
+            papersByDate[dateKey] = {
+                date: dateObj,
+                authorPapers: [],
+                collabPapers: []
+            };
         }
         
-        LI.appendChild(headerDiv);
-        LI.appendChild(authoP);
+        // Check if collaboration paper
+        let isCollab = false;
+        let collabName = "";
         
-        const hideAuthorChecked = document.getElementById("showAuthor").checked;
-        const hideCollabChecked = document.getElementById("showCollab").checked;
+        if (paper._isFromCollab) {
+            isCollab = true;
+            collabName = paper._collabName;
+        } else if (paper["metadata"]["accelerator_experiments"] != undefined) {
+            isCollab = true;
+            collabName = paper["metadata"]["accelerator_experiments"][0]["legacy_name"];
+        }
         
-        if (IsCollab) {
-            LI.className = "collabPapers";
-            if (!hideCollabChecked) LI.classList.add("hidden");
+        // Store collab info on the paper for rendering
+        paper._displayCollab = isCollab;
+        paper._displayCollabName = collabName;
+        
+        if (isCollab) {
+            papersByDate[dateKey].collabPapers.push(paper);
         } else {
-            LI.className = "authorPapers";
-            if (!hideAuthorChecked) LI.classList.add("hidden");
+            papersByDate[dateKey].authorPapers.push(paper);
         }
-        
-        authorUl.appendChild(LI);
-    }
+    });
     
-    authorDiv.appendChild(authorUl);
+    // Sort dates descending
+    const sortedDates = Object.keys(papersByDate).sort((a, b) => new Date(b) - new Date(a));
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const hideAuthorChecked = document.getElementById("showAuthor").checked;
+    const hideCollabChecked = document.getElementById("showCollab").checked;
+    
+    sortedDates.forEach(dateKey => {
+        const dayData = papersByDate[dateKey];
+        
+        // Create day section
+        const daySection = document.createElement("div");
+        daySection.className = "day-section";
+        
+        // Date header
+        const dateHeader = document.createElement("h3");
+        if (dayData.date.getTime() === today.getTime()) {
+            dateHeader.innerHTML = "Today";
+        } else {
+            dateHeader.innerHTML = dayData.date.toDateString();
+        }
+        daySection.appendChild(dateHeader);
+        
+        // Two column container
+        const columnsDiv = document.createElement("div");
+        columnsDiv.className = "day-columns";
+        
+        // Author papers column
+        const authorColumn = document.createElement("div");
+        authorColumn.className = "author-column";
+        if (!hideAuthorChecked) authorColumn.classList.add("hidden");
+        
+        dayData.authorPapers.forEach(paper => {
+            authorColumn.appendChild(createPaperCard(paper));
+        });
+        
+        // Collab papers column
+        const collabColumn = document.createElement("div");
+        collabColumn.className = "collab-column";
+        if (!hideCollabChecked) collabColumn.classList.add("hidden");
+        
+        dayData.collabPapers.forEach(paper => {
+            collabColumn.appendChild(createPaperCard(paper));
+        });
+        
+        columnsDiv.appendChild(authorColumn);
+        columnsDiv.appendChild(collabColumn);
+        daySection.appendChild(columnsDiv);
+        
+        papersContainer.appendChild(daySection);
+    });
     
     if (typeof MathJax !== 'undefined' && MathJax.typeset) {
         MathJax.typeset();
     }
+}
+
+function createPaperCard(paper) {
+    const card = document.createElement("div");
+    card.className = "paper-card";
+    
+    const meta = paper["metadata"];
+    const title = meta["titles"][0]["title"];
+    const id = paper["id"];
+    
+    // Paper header with title and bookmark button
+    const headerDiv = document.createElement("div");
+    headerDiv.className = "paper-header";
+    
+    const titleA = document.createElement("a");
+    titleA.className = "papertitle";
+    titleA.href = `https://inspirehep.net/literature/${id}`;
+    titleA.target = "_blank";
+    titleA.innerHTML = title;
+    
+    const bookmarkBtn = createBookmarkButton(paper);
+    
+    headerDiv.appendChild(titleA);
+    headerDiv.appendChild(bookmarkBtn);
+    
+    const authorsP = document.createElement("p");
+    authorsP.className = "authors";
+    
+    // Add collaboration badge if applicable
+    if (paper._displayCollab && paper._displayCollabName) {
+        const collabA = document.createElement("a");
+        collabA.className = "sub";
+        collabA.innerHTML = paper._displayCollabName;
+        collabA.href = `https://inspirehep.net/search?p=collaboration%3A%22${paper._displayCollabName}%22`;
+        collabA.target = "_blank";
+        authorsP.appendChild(collabA);
+    }
+    
+    // Add authors
+    if (meta["author_count"] > 0) {
+        const authors = meta["authors"];
+        let skip = authors.length > 10;
+        let count = 0;
+        
+        authors.forEach(author => {
+            let isSub = checkForSub(author);
+            if (skip && !isSub && count > 10) {
+                return;
+            }
+            count++;
+            
+            const authorA = document.createElement("a");
+            if (isSub) {
+                authorA.className = "sub";
+            }
+            authorA.innerHTML = author["full_name"];
+            authorA.href = `https://inspirehep.net/authors/${author["recid"]}`;
+            authorA.target = "_blank";
+            authorsP.appendChild(authorA);
+        });
+        
+        if (skip) {
+            const moreSpan = document.createElement("span");
+            moreSpan.className = "more-authors";
+            moreSpan.innerHTML = "...and more";
+            authorsP.appendChild(moreSpan);
+        }
+    }
+    
+    card.appendChild(headerDiv);
+    card.appendChild(authorsP);
+    
+    return card;
 }
 
 function checkForSub(author) {
@@ -654,14 +707,14 @@ function showSearch(el) {
 
 function hideAuthor(el) {
     let ShowAuthor = el.checked;
-    const authorPapers = document.getElementsByClassName("authorPapers");
+    const authorColumns = document.getElementsByClassName("author-column");
     const authorHeader = document.querySelector(".author-column-header");
     
-    for (let i = 0; i < authorPapers.length; i++) {
+    for (let i = 0; i < authorColumns.length; i++) {
         if (ShowAuthor) {
-            authorPapers[i].classList.remove("hidden");
+            authorColumns[i].classList.remove("hidden");
         } else {
-            authorPapers[i].classList.add("hidden");
+            authorColumns[i].classList.add("hidden");
         }
     }
     
@@ -672,14 +725,14 @@ function hideAuthor(el) {
 
 function hideCollab(el) {
     let ShowCollab = el.checked;
-    const collabPapers = document.getElementsByClassName("collabPapers");
+    const collabColumns = document.getElementsByClassName("collab-column");
     const collabHeader = document.querySelector(".collab-column-header");
     
-    for (let i = 0; i < collabPapers.length; i++) {
+    for (let i = 0; i < collabColumns.length; i++) {
         if (ShowCollab) {
-            collabPapers[i].classList.remove("hidden");
+            collabColumns[i].classList.remove("hidden");
         } else {
-            collabPapers[i].classList.add("hidden");
+            collabColumns[i].classList.add("hidden");
         }
     }
     
