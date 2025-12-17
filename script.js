@@ -2,8 +2,10 @@
 let lock = false;
 let authorList = JSON.parse(localStorage.getItem("authorList")) || [];
 let collabList = JSON.parse(localStorage.getItem("collabList")) || [];
+let readingList = JSON.parse(localStorage.getItem("readingList")) || [];
 let paperList = [];
 let pendingRequests = 0;
+let currentReadingFilter = 'all';
 
 // ==========================================================================
 // UI State Management
@@ -412,8 +414,10 @@ function listPapers(hits) {
         const meta = hits[i]["metadata"];
         const title = meta["titles"][0]["title"];
         const LI = document.createElement("li");
-        const authoP = document.createElement("p");
-        authoP.className = "authors";
+        
+        // Paper header with title and bookmark button
+        const headerDiv = document.createElement("div");
+        headerDiv.className = "paper-header";
         
         const titleA = document.createElement("a");
         titleA.className = "papertitle";
@@ -421,6 +425,15 @@ function listPapers(hits) {
         titleA.href = `https://inspirehep.net/literature/${id}`;
         titleA.target = "_blank";
         titleA.innerHTML = title;
+        
+        // Add bookmark button
+        const bookmarkBtn = createBookmarkButton(hits[i]);
+        
+        headerDiv.appendChild(titleA);
+        headerDiv.appendChild(bookmarkBtn);
+        
+        const authoP = document.createElement("p");
+        authoP.className = "authors";
         
         if (IsCollab) {
             const authoA = document.createElement("a");
@@ -461,7 +474,7 @@ function listPapers(hits) {
             }
         }
         
-        LI.appendChild(titleA);
+        LI.appendChild(headerDiv);
         LI.appendChild(authoP);
         
         const hideAuthor = document.getElementById("showAuthor").checked;
@@ -664,3 +677,224 @@ function hideCollab(el) {
         collabPapers[i].style.display = ShowCollab ? "block" : "none";
     }
 }
+
+// ==========================================================================
+// Reading List
+// ==========================================================================
+
+function isInReadingList(paperId) {
+    return readingList.some(item => item.id === paperId);
+}
+
+function getReadingListItem(paperId) {
+    return readingList.find(item => item.id === paperId);
+}
+
+function addToReadingList(paper) {
+    if (isInReadingList(paper.id)) {
+        return;
+    }
+    
+    const readingItem = {
+        id: paper.id,
+        title: paper.metadata.titles[0].title,
+        authors: paper.metadata.authors ? paper.metadata.authors.slice(0, 3).map(a => a.full_name) : [],
+        addedAt: new Date().toISOString(),
+        isRead: false,
+        url: `https://inspirehep.net/literature/${paper.id}`
+    };
+    
+    readingList.unshift(readingItem);
+    localStorage.setItem("readingList", JSON.stringify(readingList));
+    
+    updateReadingListUI();
+    updatePaperBookmarkButtons();
+}
+
+function removeFromReadingList(paperId) {
+    readingList = readingList.filter(item => item.id !== paperId);
+    localStorage.setItem("readingList", JSON.stringify(readingList));
+    
+    updateReadingListUI();
+    updatePaperBookmarkButtons();
+}
+
+function toggleReadStatus(paperId) {
+    const item = getReadingListItem(paperId);
+    if (item) {
+        item.isRead = !item.isRead;
+        localStorage.setItem("readingList", JSON.stringify(readingList));
+        updateReadingListUI();
+    }
+}
+
+function updateReadingCount() {
+    const badge = document.getElementById("readingCount");
+    const unreadCount = readingList.filter(item => !item.isRead).length;
+    if (badge) {
+        badge.textContent = unreadCount;
+        badge.style.display = unreadCount > 0 ? "inline" : "none";
+    }
+}
+
+function updateEmptyReadingState() {
+    const emptyState = document.getElementById("emptyReadingState");
+    const listItems = document.getElementById("readingListItems");
+    
+    const filteredList = getFilteredReadingList();
+    
+    if (filteredList.length === 0) {
+        if (emptyState) {
+            emptyState.style.display = "block";
+            if (readingList.length === 0) {
+                emptyState.textContent = "No papers in your reading list yet. Click the bookmark icon on papers to add them.";
+            } else {
+                emptyState.textContent = `No ${currentReadingFilter} papers in your reading list.`;
+            }
+        }
+        if (listItems) listItems.style.display = "none";
+    } else {
+        if (emptyState) emptyState.style.display = "none";
+        if (listItems) listItems.style.display = "block";
+    }
+}
+
+function getFilteredReadingList() {
+    switch (currentReadingFilter) {
+        case 'unread':
+            return readingList.filter(item => !item.isRead);
+        case 'read':
+            return readingList.filter(item => item.isRead);
+        default:
+            return readingList;
+    }
+}
+
+function filterReadingList(filter, buttonEl) {
+    currentReadingFilter = filter;
+    
+    // Update active button
+    const buttons = document.querySelectorAll('.reading-list-filters .btn-filter');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    if (buttonEl) buttonEl.classList.add('active');
+    
+    updateReadingListUI();
+}
+
+function updateReadingListUI() {
+    const listContainer = document.getElementById("readingListItems");
+    if (!listContainer) return;
+    
+    listContainer.innerHTML = "";
+    
+    const filteredList = getFilteredReadingList();
+    
+    filteredList.forEach(item => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = `reading-list-item ${item.isRead ? 'is-read' : ''}`;
+        itemDiv.dataset.id = item.id;
+        
+        const contentDiv = document.createElement("div");
+        contentDiv.className = "reading-item-content";
+        
+        const titleLink = document.createElement("a");
+        titleLink.className = "reading-item-title";
+        titleLink.href = item.url;
+        titleLink.target = "_blank";
+        titleLink.innerHTML = item.title;
+        
+        const authorsSpan = document.createElement("span");
+        authorsSpan.className = "reading-item-authors";
+        authorsSpan.textContent = item.authors.join(", ") + (item.authors.length >= 3 ? " et al." : "");
+        
+        contentDiv.appendChild(titleLink);
+        contentDiv.appendChild(authorsSpan);
+        
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "reading-item-actions";
+        
+        // Toggle read button
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = `btn-icon ${item.isRead ? 'is-read' : ''}`;
+        toggleBtn.title = item.isRead ? "Mark as unread" : "Mark as read";
+        toggleBtn.innerHTML = item.isRead ? "◉" : "○";
+        toggleBtn.onclick = (e) => {
+            e.stopPropagation();
+            toggleReadStatus(item.id);
+        };
+        
+        // Remove button
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "btn-icon btn-remove";
+        removeBtn.title = "Remove from reading list";
+        removeBtn.innerHTML = "×";
+        removeBtn.onclick = (e) => {
+            e.stopPropagation();
+            removeFromReadingList(item.id);
+        };
+        
+        actionsDiv.appendChild(toggleBtn);
+        actionsDiv.appendChild(removeBtn);
+        
+        itemDiv.appendChild(contentDiv);
+        itemDiv.appendChild(actionsDiv);
+        
+        listContainer.appendChild(itemDiv);
+    });
+    
+    updateReadingCount();
+    updateEmptyReadingState();
+    
+    // Re-render MathJax for reading list
+    if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+        MathJax.typeset();
+    }
+}
+
+function updatePaperBookmarkButtons() {
+    const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
+    bookmarkBtns.forEach(btn => {
+        const paperId = btn.dataset.paperId;
+        const isBookmarked = isInReadingList(paperId);
+        btn.classList.toggle('bookmarked', isBookmarked);
+        btn.innerHTML = isBookmarked ? "★" : "☆";
+        btn.title = isBookmarked ? "Remove from reading list" : "Add to reading list";
+    });
+}
+
+function createBookmarkButton(paper) {
+    const btn = document.createElement("button");
+    btn.className = `bookmark-btn ${isInReadingList(paper.id) ? 'bookmarked' : ''}`;
+    btn.dataset.paperId = paper.id;
+    btn.innerHTML = isInReadingList(paper.id) ? "★" : "☆";
+    btn.title = isInReadingList(paper.id) ? "Remove from reading list" : "Add to reading list";
+    btn.onclick = (e) => {
+        e.stopPropagation();
+        if (isInReadingList(paper.id)) {
+            removeFromReadingList(paper.id);
+        } else {
+            addToReadingList(paper);
+        }
+    };
+    return btn;
+}
+
+function showReadingList(el) {
+    let subDiv = document.getElementById("readingListSection");
+    let icon = el.querySelector('.icon');
+    
+    if (subDiv.style.display === "block") {
+        subDiv.style.display = "none";
+        el.classList.remove("down");
+        el.classList.add("up");
+        if (icon) icon.textContent = "▶";
+    } else {
+        subDiv.style.display = "block";
+        el.classList.remove("up");
+        el.classList.add("down");
+        if (icon) icon.textContent = "▼";
+    }
+}
+
+// Initialize reading list on page load
+updateReadingListUI();

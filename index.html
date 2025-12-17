@@ -75,6 +75,24 @@
               <div id="authorRes" class="search-results"></div>
             </div>
           </section>
+
+          <!-- Reading List Section -->
+          <section class="card reading-list">
+            <h2 id="ReadingTitle" class="section-header down" onclick="showReadingList(this)">
+              <span class="icon">▼</span>
+              Reading List
+              <span class="badge" id="readingCount">0</span>
+            </h2>
+            <div id="readingListSection" class="section-content" style="display:block">
+              <div class="reading-list-filters">
+                <button class="btn btn-small btn-filter active" data-filter="all" onclick="filterReadingList('all', this)">All</button>
+                <button class="btn btn-small btn-filter" data-filter="unread" onclick="filterReadingList('unread', this)">Unread</button>
+                <button class="btn btn-small btn-filter" data-filter="read" onclick="filterReadingList('read', this)">Read</button>
+              </div>
+              <div id="readingListItems" class="reading-list-items"></div>
+              <p class="empty-state" id="emptyReadingState">No papers in your reading list yet. Click the bookmark icon on papers to add them.</p>
+            </div>
+          </section>
         </aside>
 
         <!-- Papers Section -->

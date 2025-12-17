@@ -732,6 +732,201 @@ input[type=text]::placeholder {
 }
 
 /* ==========================================================================
+   Paper Header with Bookmark
+   ========================================================================== */
+.paper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.paper-header .papertitle {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Bookmark Button
+   ========================================================================== */
+.bookmark-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: var(--dark5);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.bookmark-btn:hover {
+    color: var(--yellow);
+    transform: scale(1.2);
+    background: none;
+}
+
+.bookmark-btn.bookmarked {
+    color: var(--yellow);
+}
+
+.bookmark-btn.bookmarked:hover {
+    color: var(--red);
+}
+
+/* ==========================================================================
+   Reading List Section
+   ========================================================================== */
+.reading-list {
+    border-left: 3px solid var(--yellow);
+}
+
+.reading-list-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-small {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.btn-filter {
+    background-color: var(--bg-highlight);
+    color: var(--fg-dark);
+    border: 1px solid var(--fg-gutter);
+}
+
+.btn-filter:hover {
+    background-color: var(--fg-gutter);
+    color: var(--fg);
+}
+
+.btn-filter.active {
+    background-color: var(--yellow);
+    color: var(--bg-dark);
+    border-color: var(--yellow);
+}
+
+.btn-filter.active:hover {
+    background-color: var(--orange);
+    border-color: var(--orange);
+}
+
+/* ==========================================================================
+   Reading List Items
+   ========================================================================== */
+.reading-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.reading-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: var(--bg-highlight);
+    border-radius: 6px;
+    border-left: 3px solid var(--yellow);
+    transition: all 0.2s ease;
+}
+
+.reading-list-item:hover {
+    background-color: var(--fg-gutter);
+    border-left-color: var(--orange);
+}
+
+.reading-list-item.is-read {
+    opacity: 0.6;
+    border-left-color: var(--green);
+}
+
+.reading-list-item.is-read:hover {
+    opacity: 1;
+}
+
+.reading-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.reading-item-title {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--fg);
+    text-decoration: none;
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.reading-item-title:hover {
+    color: var(--cyan);
+}
+
+.reading-list-item.is-read .reading-item-title {
+    text-decoration: line-through;
+    color: var(--dark5);
+}
+
+.reading-item-authors {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--dark5);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reading-item-actions {
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    color: var(--dark5);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.btn-icon:hover {
+    background-color: var(--bg);
+    color: var(--fg);
+}
+
+.btn-icon.is-read {
+    color: var(--green);
+}
+
+.btn-icon.is-read:hover {
+    color: var(--cyan);
+}
+
+.btn-icon.btn-remove:hover {
+    background-color: var(--red);
+    color: var(--bg-dark);
+}
+
+/* ==========================================================================
    Links
    ========================================================================== */
 a {

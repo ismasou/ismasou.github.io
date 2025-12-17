@@ -7,9 +7,10 @@ A personalized paper feed for tracking publications from your favorite authors a
 - **Author Subscriptions**: Search and subscribe to authors to see their latest papers
 - **Collaboration Tracking**: Follow physics collaborations (ATLAS, CMS, etc.)
 - **Recent Papers Feed**: View papers from the last 3 months, sorted by date
+- **Reading List**: Save papers to read later with bookmark button, mark as read/unread
 - **Import/Export**: Backup and restore your subscription lists as JSON
 - **MathJax Support**: Renders LaTeX equations in paper titles
-- **Offline Storage**: Subscriptions persist in browser localStorage
+- **Offline Storage**: Subscriptions and reading list persist in browser localStorage
 
 ## Usage
 
@@ -23,8 +24,15 @@ A personalized paper feed for tracking publications from your favorite authors a
    - Papers appear automatically once you have subscriptions
    - Use checkboxes to filter author papers vs collaboration papers
    - Click paper titles to view on INSPIRE-HEP
+   - Click the ☆ bookmark icon to save papers to your reading list
 
-3. **Manage Subscriptions**
+3. **Reading List**
+   - Papers you bookmark appear in the Reading List sidebar
+   - Filter by All, Unread, or Read papers
+   - Click ○ to mark a paper as read (shows as ◉ when read)
+   - Click × to remove from reading list
+
+4. **Manage Subscriptions**
    - Expand "Subscriptions" to see your list
    - Click × to remove a subscription
    - Use Import/Export buttons to backup your lists
