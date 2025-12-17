@@ -1165,6 +1165,12 @@ function handleKeyboardNavigation(event) {
     
     const key = event.key.toLowerCase();
     
+    // Handle Escape to close help
+    if (event.key === 'Escape') {
+        closeKeyboardHelp();
+        return;
+    }
+    
     switch (key) {
         case 'j': // Next paper
             event.preventDefault();
@@ -1252,11 +1258,27 @@ function showKeyboardHelp() {
                 <li><kbd>g</kbd> Go to first paper</li>
                 <li><kbd>G</kbd> Go to last paper</li>
                 <li><kbd>?</kbd> Toggle this help</li>
+                <li><kbd>Esc</kbd> Close this help</li>
             </ul>
-            <button onclick="this.parentElement.parentElement.remove()" class="btn btn-secondary">Close</button>
+            <button onclick="closeKeyboardHelp()" class="btn btn-secondary">Close</button>
         </div>
     `;
+    
+    // Close when clicking outside the content
+    helpDiv.addEventListener('click', (e) => {
+        if (e.target === helpDiv) {
+            closeKeyboardHelp();
+        }
+    });
+    
     document.body.appendChild(helpDiv);
+}
+
+function closeKeyboardHelp() {
+    const existingHelp = document.getElementById('keyboardHelp');
+    if (existingHelp) {
+        existingHelp.remove();
+    }
 }
 
 // Initialize keyboard navigation

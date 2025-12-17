@@ -1,0 +1,891 @@
+[
+  {
+    "positions": [
+      {
+        "rank": "SENIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903341"
+        },
+        "current": true,
+        "start_date": "2011",
+        "institution": "Wayne State U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "JUNIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903092"
+        },
+        "end_date": "2011",
+        "start_date": "2008",
+        "institution": "Ohio State U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902781"
+        },
+        "end_date": "2008",
+        "start_date": "2005",
+        "institution": "Duke U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/911528"
+        },
+        "end_date": "2005",
+        "start_date": "2002",
+        "institution": "LBNL, NSD",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902995"
+        },
+        "end_date": "2002",
+        "start_date": "1997",
+        "institution": "McGill U.",
+        "curated_relation": true
+      }
+    ],
+    "ids": [
+      {
+        "value": "A.Majumder.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00103980",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "HEPNAMES-194050",
+        "schema": "SPIRES"
+      }
+    ],
+    "name": {
+      "value": "Majumder, Abhijit",
+      "preferred_name": "Abhijit Majumder"
+    },
+    "stub": false,
+    "urls": [
+      {
+        "value": "http://www.physics.wayne.edu/~amajumder/"
+      }
+    ],
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 999155,
+    "legacy_version": "20161102201927.0",
+    "arxiv_categories": [
+      "hep-ph",
+      "nucl-th"
+    ],
+    "legacy_creation_date": "1999-08-10"
+  },
+  {
+    "advisors": [
+      {
+        "name": "Pajares, Carlos",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/994492"
+        },
+        "degree_type": "phd",
+        "curated_relation": false
+      }
+    ],
+    "positions": [
+      {
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/910711"
+        },
+        "current": true,
+        "institution": "Santiago de Compostela U., IGFAE",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903168"
+        },
+        "current": false,
+        "institution": "Rome U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902725"
+        },
+        "current": false,
+        "institution": "CERN",
+        "curated_relation": false
+      },
+      {
+        "rank": "POSTDOC",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/1404231"
+        },
+        "current": false,
+        "institution": "U. Paris-Saclay",
+        "curated_relation": false
+      },
+      {
+        "rank": "PHD",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/904175"
+        },
+        "current": false,
+        "institution": "Santiago de Compostela U.",
+        "curated_relation": false
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0003-4586-2758",
+        "schema": "ORCID"
+      },
+      {
+        "value": "Carlos.Albert.Salgado.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00122740",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "HEPNAMES-97470",
+        "schema": "SPIRES"
+      },
+      {
+        "value": "CASSalgado",
+        "schema": "TWITTER"
+      }
+    ],
+    "name": {
+      "value": "Salgado, Carlos A.",
+      "preferred_name": "Carlos A. Salgado"
+    },
+    "stub": false,
+    "urls": [
+      {
+        "value": "http://csalgado.home.cern.ch/csalgado"
+      }
+    ],
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "control_number": 990566,
+    "legacy_version": "20200623155147.0",
+    "arxiv_categories": [
+      "hep-ph",
+      "nucl-th"
+    ],
+    "legacy_creation_date": "2000-01-18"
+  },
+  {
+    "positions": [
+      {
+        "rank": "SENIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/1087875"
+        },
+        "current": true,
+        "start_date": "2008",
+        "institution": "IPhT, Saclay",
+        "curated_relation": true
+      },
+      {
+        "rank": "SENIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/910389"
+        },
+        "end_date": "2008",
+        "start_date": "1995",
+        "institution": "Saclay, SPhT",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902725"
+        },
+        "end_date": "2000",
+        "start_date": "1998",
+        "institution": "CERN",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/910389"
+        },
+        "end_date": "1994",
+        "start_date": "1991",
+        "institution": "CEA, Saclay, SPhT",
+        "curated_relation": true
+      },
+      {
+        "rank": "MASTER",
+        "end_date": "1991",
+        "start_date": "1990",
+        "institution": "Ecole Normale Suprieure"
+      },
+      {
+        "rank": "UNDERGRADUATE",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902698"
+        },
+        "end_date": "1989",
+        "start_date": "1984",
+        "institution": "Bucharest U.",
+        "curated_relation": true
+      }
+    ],
+    "advisors": [
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00067339",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Blaizot, Jean-Paul",
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/1016211"
+        },
+        "degree_type": "other"
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0001-6428-9876",
+        "schema": "ORCID"
+      },
+      {
+        "value": "E.Iancu.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00091848",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "HEPNAMES-262048",
+        "schema": "SPIRES"
+      }
+    ],
+    "name": {
+      "value": "Iancu, Edmond",
+      "preferred_name": "Edmond Iancu"
+    },
+    "stub": false,
+    "urls": [
+      {
+        "value": "http://ipht.cea.fr/Pisp/edmond.iancu/index.php"
+      }
+    ],
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 1005173,
+    "legacy_version": "20160722092545.0",
+    "arxiv_categories": [
+      "hep-ph",
+      "hep-th"
+    ],
+    "legacy_creation_date": "1998-08-17"
+  },
+  {
+    "positions": [
+      {
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/910389"
+        },
+        "current": true,
+        "institution": "Saclay, SPhT",
+        "curated_relation": true
+      },
+      {
+        "rank": "UNDERGRADUATE",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902785"
+        },
+        "end_date": "1977",
+        "institution": "Ecole Normale Superieure",
+        "curated_relation": true
+      }
+    ],
+    "advisors": [
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00120324",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Ripka, Georges",
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/991671"
+        },
+        "degree_type": "other"
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0002-9824-2467",
+        "schema": "ORCID"
+      },
+      {
+        "value": "J.P.Blaizot.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00067339",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "HEPNAMES-387479",
+        "schema": "SPIRES"
+      }
+    ],
+    "name": {
+      "value": "Blaizot, Jean-Paul",
+      "preferred_name": "Jean-Paul Blaizot"
+    },
+    "stub": false,
+    "urls": [
+      {
+        "value": "http://www-spht.cea.fr"
+      }
+    ],
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 1016211,
+    "legacy_version": "20150923140345.0",
+    "arxiv_categories": [
+      "cond-mat",
+      "hep-ph",
+      "hep-th",
+      "nucl-th"
+    ],
+    "legacy_creation_date": "1999-06-02"
+  },
+  {
+    "advisors": [
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00261663",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Bravina, Larissa V.",
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/1042857"
+        },
+        "degree_type": "phd"
+      }
+    ],
+    "positions": [
+      {
+        "rank": "JUNIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902665"
+        },
+        "current": true,
+        "start_date": "2018",
+        "institution": "Bergen U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902725"
+        },
+        "end_date": "2018",
+        "start_date": "2015",
+        "institution": "CERN",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/905190"
+        },
+        "end_date": "2015",
+        "start_date": "2012",
+        "institution": "Barcelona U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902973"
+        },
+        "end_date": "2012",
+        "start_date": "2010",
+        "institution": "Lund U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/904175"
+        },
+        "end_date": "2010",
+        "start_date": "2008",
+        "institution": "Santiago de Compostela U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903110"
+        },
+        "end_date": "2008",
+        "start_date": "2004",
+        "institution": "Oslo U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "MASTER",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903110"
+        },
+        "end_date": "2004",
+        "start_date": "2003",
+        "institution": "Oslo U.",
+        "curated_relation": true
+      }
+    ],
+    "project_membership": [
+      {
+        "name": "CERN-LHC-ALICE",
+        "record": {
+          "$ref": "https://inspirehep.net/api/experiments/1110642"
+        },
+        "current": false,
+        "curated_relation": true
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0001-5677-0010",
+        "schema": "ORCID"
+      },
+      {
+        "value": "K.Tywoniuk.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00423175",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "ktywoniuk",
+        "schema": "LINKEDIN"
+      },
+      {
+        "value": "HEPNAMES-641375",
+        "schema": "SPIRES"
+      }
+    ],
+    "name": {
+      "value": "Tywoniuk, Konrad",
+      "preferred_name": "Konrad Tywoniuk"
+    },
+    "stub": false,
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 1039756,
+    "legacy_version": "20200528230825.0",
+    "arxiv_categories": [
+      "hep-ph",
+      "nucl-th",
+      "hep-th",
+      "quant-ph"
+    ],
+    "legacy_creation_date": "2006-09-25"
+  },
+  {
+    "positions": [
+      {
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/906885"
+        },
+        "current": true,
+        "start_date": "2022",
+        "institution": "SUBATECH, Nantes",
+        "curated_relation": false
+      },
+      {
+        "rank": "POSTDOC",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902689"
+        },
+        "current": false,
+        "end_date": "2022",
+        "start_date": "2020",
+        "institution": "Brookhaven",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/1087875"
+        },
+        "current": false,
+        "end_date": "2020",
+        "start_date": "2017",
+        "institution": "IPhT, Saclay",
+        "curated_relation": true
+      }
+    ],
+    "advisors": [
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00091848",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Iancu, Edmond",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/1005173"
+        },
+        "degree_type": "other",
+        "curated_relation": false
+      },
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00056024",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Soyez, Gregory",
+        "hidden": false,
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/1020028"
+        },
+        "degree_type": "other",
+        "curated_relation": false
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0002-9033-1473",
+        "schema": "ORCID"
+      },
+      {
+        "value": "P.Caucal.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00492230",
+        "schema": "INSPIRE ID"
+      }
+    ],
+    "name": {
+      "value": "Caucal, Paul",
+      "preferred_name": "Paul Caucal"
+    },
+    "stub": false,
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 1657352,
+    "legacy_version": "20210315201527.0",
+    "arxiv_categories": [
+      "astro-ph",
+      "hep-ph",
+      "hep-th",
+      "nucl-th"
+    ],
+    "legacy_creation_date": "2018-02-26"
+  },
+  {
+    "positions": [
+      {
+        "rank": "SENIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902689"
+        },
+        "current": true,
+        "start_date": "1998",
+        "institution": "Brookhaven",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902672"
+        },
+        "end_date": "1998",
+        "start_date": "1997",
+        "institution": "Bohr Inst.",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903338"
+        },
+        "end_date": "1997",
+        "start_date": "1994",
+        "institution": "Washington U., Seattle",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903010"
+        },
+        "end_date": "1994",
+        "start_date": "1992",
+        "institution": "Minnesota U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903237"
+        },
+        "end_date": "1992",
+        "institution": "SUNY, Stony Brook",
+        "curated_relation": true
+      }
+    ],
+    "advisors": [
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00143173",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Prakash, Madappa",
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/1015185"
+        },
+        "degree_type": "other"
+      },
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00164033",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Brown, Gerald Edward",
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/992832"
+        },
+        "degree_type": "other"
+      }
+    ],
+    "ids": [
+      {
+        "value": "R.Venugopalan.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00133752",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "HEPNAMES-32832",
+        "schema": "SPIRES"
+      }
+    ],
+    "name": {
+      "value": "Venugopalan, Raju",
+      "preferred_name": "Raju Venugopalan"
+    },
+    "stub": false,
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 984812,
+    "legacy_version": "20150923133057.0",
+    "arxiv_categories": [
+      "hep-ph"
+    ],
+    "legacy_creation_date": "1996-06-24"
+  },
+  {
+    "positions": [
+      {
+        "rank": "JUNIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902670"
+        },
+        "current": true,
+        "start_date": "2018",
+        "institution": "Bielefeld U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "JUNIOR",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903338"
+        },
+        "end_date": "2018",
+        "start_date": "2016",
+        "institution": "Washington U., Seattle",
+        "curated_relation": true
+      },
+      {
+        "rank": "POSTDOC",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902689"
+        },
+        "end_date": "2016",
+        "start_date": "2013",
+        "institution": "Brookhaven",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/902842"
+        },
+        "end_date": "2013",
+        "start_date": "2011",
+        "institution": "Heidelberg U.",
+        "curated_relation": true
+      },
+      {
+        "rank": "PHD",
+        "end_date": "2011",
+        "start_date": "2010",
+        "institution": "Darmstadt Tech. U."
+      },
+      {
+        "rank": "MASTER",
+        "end_date": "2010",
+        "start_date": "2009",
+        "institution": "Michigan State Univ."
+      },
+      {
+        "rank": "UNDERGRADUATE",
+        "end_date": "2009",
+        "start_date": "2006",
+        "institution": "Darmstadt Tech. U."
+      }
+    ],
+    "advisors": [
+      {
+        "ids": [
+          {
+            "value": "INSPIRE-00162723",
+            "schema": "INSPIRE ID"
+          }
+        ],
+        "name": "Berges, Juergen",
+        "record": {
+          "$ref": "https://inspirehep.net/api/authors/1016653"
+        },
+        "degree_type": "phd"
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0003-3713-2325",
+        "schema": "ORCID"
+      },
+      {
+        "value": "S.Schlichting.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00383590",
+        "schema": "INSPIRE ID"
+      }
+    ],
+    "name": {
+      "value": "Schlichting, Sören",
+      "name_variants": [
+        "Schlichting, Soeren",
+        "Schlichting, Soren"
+      ],
+      "preferred_name": "Sören Schlichting"
+    },
+    "stub": false,
+    "urls": [
+      {
+        "value": "http://www.kaiden.de"
+      }
+    ],
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 1251348,
+    "legacy_version": "20190812222049.0",
+    "arxiv_categories": [
+      "hep-ph",
+      "hep-th"
+    ],
+    "legacy_creation_date": "2013-08-28"
+  },
+  {
+    "positions": [
+      {
+        "record": {
+          "$ref": "https://inspirehep.net/api/institutions/903101"
+        },
+        "current": true,
+        "institution": "Orsay, LPT",
+        "curated_relation": true
+      }
+    ],
+    "ids": [
+      {
+        "value": "0000-0001-6454-3782",
+        "schema": "ORCID"
+      },
+      {
+        "value": "Y.Mehtar.Tani.1",
+        "schema": "INSPIRE BAI"
+      },
+      {
+        "value": "INSPIRE-00422552",
+        "schema": "INSPIRE ID"
+      },
+      {
+        "value": "HEPNAMES-610364",
+        "schema": "SPIRES"
+      }
+    ],
+    "name": {
+      "value": "Mehtar-Tani, Yacine",
+      "preferred_name": "Yacine Mehtar-Tani"
+    },
+    "stub": false,
+    "status": "active",
+    "$schema": "https://inspirehep.net/schemas/records/authors.json",
+    "deleted": false,
+    "control_number": 1036746,
+    "legacy_version": "20151112213432.0",
+    "arxiv_categories": [
+      "hep-ph"
+    ],
+    "legacy_creation_date": "2006-07-20"
+  }
+]
