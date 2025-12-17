@@ -117,10 +117,10 @@
             <!-- Column Headers -->
             <div class="papers-columns-header">
               <div class="column-header author-column-header">
-                <span class="column-icon">○</span> Author Papers
+                <span class="column-icon">○</span> Author Papers <span class="paper-count" id="authorPaperCount">(0)</span>
               </div>
               <div class="column-header collab-column-header">
-                <span class="column-icon">◉</span> Collaboration Papers
+                <span class="column-icon">◉</span> Collaboration Papers <span class="paper-count" id="collabPaperCount">(0)</span>
               </div>
             </div>
             
@@ -139,6 +139,15 @@
 
             <!-- Papers List -->
             <div id="papers" class="papers-grid"></div>
+            
+            <!-- Load More Button -->
+            <div id="loadMoreContainer" class="load-more-container" style="display: none;">
+              <button onclick="loadMorePapers()" class="btn btn-primary btn-load-more">
+                <span id="loadMoreText">Load More Papers</span>
+                <span id="loadMoreSpinner" class="btn-spinner" style="display: none;"></span>
+              </button>
+              <p class="date-range-info" id="dateRangeInfo">Showing papers from the last week</p>
+            </div>
           </div>
         </section>
       </main>

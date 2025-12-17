@@ -6,6 +6,21 @@ let paperList = [];
 let pendingRequests = 0;
 let currentReadingFilter = 'all';
 
+// Date-based fetching state
+let currentWeeksBack = 4; // Start with 1 month (4 weeks)
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+function getDateRange() {
+    const now = new Date();
+    const startDate = new Date(now.getTime() - (currentWeeksBack * WEEK_MS));
+    // Format as YYYY-MM-DD for INSPIRE API
+    const formatDate = (d) => d.toISOString().split('T')[0];
+    return {
+        start: formatDate(startDate),
+        end: formatDate(now)
+    };
+}
+
 // ==========================================================================
 // UI State Management
 // ==========================================================================
@@ -50,6 +65,18 @@ function updateSubCount() {
     }
 }
 
+function updatePaperCounts(authorCount, collabCount) {
+    const authorCountEl = document.getElementById("authorPaperCount");
+    const collabCountEl = document.getElementById("collabPaperCount");
+    
+    if (authorCountEl) {
+        authorCountEl.textContent = `(${authorCount})`;
+    }
+    if (collabCountEl) {
+        collabCountEl.textContent = `(${collabCount})`;
+    }
+}
+
 function updateEmptySubState() {
     const emptyState = document.getElementById("emptySubState");
     const subList = document.getElementById("subList");
@@ -88,6 +115,7 @@ function listSubs() {
             });
             localStorage.setItem("authorList", JSON.stringify(authorList));
             paperList = [];
+            currentWeeksBack = 4; // Reset to 1 month
             listSubs();
         };
         
@@ -115,6 +143,7 @@ function listSubs() {
             });
             localStorage.setItem("collabList", JSON.stringify(collabList));
             paperList = [];
+            currentWeeksBack = 4; // Reset to 1 month
             listSubs();
         };
         
@@ -357,7 +386,11 @@ function checkLoadingComplete() {
         if (paperList.length === 0) {
             if (authorList.length === 0 && collabList.length === 0) {
                 showEmptyState();
+                hideLoadMore();
             }
+        } else {
+            showLoadMore();
+            updateDateRangeInfo();
         }
     }
 }
@@ -367,6 +400,7 @@ function listPapers(hits) {
     papersContainer.innerHTML = "";
 
     if (hits.length === 0) {
+        updatePaperCounts(0, 0);
         return;
     }
     
@@ -374,6 +408,8 @@ function listPapers(hits) {
 
     // Group papers by date
     const papersByDate = {};
+    let totalAuthorPapers = 0;
+    let totalCollabPapers = 0;
     
     hits.forEach(paper => {
         const dateObj = new Date(paper["created"]);
@@ -406,10 +442,15 @@ function listPapers(hits) {
         
         if (isCollab) {
             papersByDate[dateKey].collabPapers.push(paper);
+            totalCollabPapers++;
         } else {
             papersByDate[dateKey].authorPapers.push(paper);
+            totalAuthorPapers++;
         }
     });
+    
+    // Update paper counts in headers
+    updatePaperCounts(totalAuthorPapers, totalCollabPapers);
     
     // Sort dates descending
     const sortedDates = Object.keys(papersByDate).sort((a, b) => new Date(b) - new Date(a));
@@ -568,7 +609,10 @@ function searchPaper(author) {
         return;
     }
     
-    fetch(`https://inspirehep.net/api/literature?sort=mostrecent&size=5&page=1&q=author%3A${authorId}`)
+    const dateRange = getDateRange();
+    const query = `author:${authorId} and date:${dateRange.start}->${dateRange.end}`;
+    
+    fetch(`https://inspirehep.net/api/literature?sort=mostrecent&size=100&page=1&q=${encodeURIComponent(query)}`)
         .then((response) => response.json())
         .then((json) => addPaper(json, false))
         .catch((error) => {
@@ -579,9 +623,13 @@ function searchPaper(author) {
 }
 
 function searchPaperCollab(collab) {
-    fetch(`https://inspirehep.net/api/literature?sort=mostrecent&size=5&page=1&q=collaboration%3A${collab["collaboration"]["value"]}`)
+    const dateRange = getDateRange();
+    const collabName = collab["collaboration"]["value"];
+    const query = `collaboration:${collabName} and date:${dateRange.start}->${dateRange.end}`;
+    
+    fetch(`https://inspirehep.net/api/literature?sort=mostrecent&size=100&page=1&q=${encodeURIComponent(query)}`)
         .then((response) => response.json())
-        .then((json) => addPaper(json, true, collab["collaboration"]["value"]))
+        .then((json) => addPaper(json, true, collabName))
         .catch((error) => {
             console.error("Error fetching papers:", error);
             pendingRequests--;
@@ -594,6 +642,7 @@ function searchAll() {
     
     if (totalSubs === 0) {
         showEmptyState();
+        hideLoadMore();
         return;
     }
     
@@ -610,6 +659,62 @@ function searchAll() {
 
     hideAuthor(document.getElementById("showAuthor"));
     hideCollab(document.getElementById("showCollab"));
+}
+
+function loadMorePapers() {
+    const totalSubs = authorList.length + collabList.length;
+    
+    if (totalSubs === 0) {
+        return;
+    }
+    
+    // Increment weeks and search for more
+    currentWeeksBack++;
+    
+    // Show loading state on button
+    const loadMoreText = document.getElementById("loadMoreText");
+    const loadMoreSpinner = document.getElementById("loadMoreSpinner");
+    if (loadMoreText) loadMoreText.textContent = "Loading...";
+    if (loadMoreSpinner) loadMoreSpinner.style.display = "inline-block";
+    
+    pendingRequests = totalSubs;
+    
+    authorList.forEach((ele) => {
+        searchPaper(ele);
+    });
+    
+    collabList.forEach((ele) => {
+        searchPaperCollab(ele);
+    });
+}
+
+function showLoadMore() {
+    const container = document.getElementById("loadMoreContainer");
+    if (container) {
+        container.style.display = "flex";
+        updateDateRangeInfo();
+    }
+}
+
+function hideLoadMore() {
+    const container = document.getElementById("loadMoreContainer");
+    if (container) {
+        container.style.display = "none";
+    }
+}
+
+function updateDateRangeInfo() {
+    const info = document.getElementById("dateRangeInfo");
+    const loadMoreText = document.getElementById("loadMoreText");
+    const loadMoreSpinner = document.getElementById("loadMoreSpinner");
+    
+    if (info) {
+        const weekText = currentWeeksBack === 1 ? "week" : "weeks";
+        info.textContent = `Showing papers from the last ${currentWeeksBack} ${weekText}`;
+    }
+    
+    if (loadMoreText) loadMoreText.textContent = "Load More Papers";
+    if (loadMoreSpinner) loadMoreSpinner.style.display = "none";
 }
 
 // Initial search
@@ -961,3 +1066,198 @@ function showReadingList(el) {
 
 // Initialize reading list on page load
 updateReadingListUI();
+
+// ==========================================================================
+// Keyboard Navigation (Vim-style)
+// ==========================================================================
+
+let selectedPaperIndex = -1;
+let visiblePapers = [];
+
+function updateVisiblePapers() {
+    visiblePapers = [];
+    const paperCards = document.querySelectorAll('.paper-card');
+    
+    paperCards.forEach((card, index) => {
+        // Check if the card is visible (not in a hidden column)
+        const column = card.closest('.author-column, .collab-column');
+        if (column && !column.classList.contains('hidden')) {
+            visiblePapers.push(card);
+        }
+    });
+    
+    return visiblePapers;
+}
+
+function selectPaper(index) {
+    updateVisiblePapers();
+    
+    // Remove previous selection
+    const previouslySelected = document.querySelector('.paper-card.selected');
+    if (previouslySelected) {
+        previouslySelected.classList.remove('selected');
+    }
+    
+    // Remove focus from load more button
+    const loadMoreBtn = document.querySelector('.btn-load-more');
+    if (loadMoreBtn) {
+        loadMoreBtn.classList.remove('focused');
+    }
+    
+    // Bounds check
+    if (visiblePapers.length === 0) {
+        selectedPaperIndex = -1;
+        return;
+    }
+    
+    // If trying to go past the last paper, focus the Load More button
+    if (index >= visiblePapers.length) {
+        selectedPaperIndex = visiblePapers.length; // Set to length to indicate "past end"
+        if (loadMoreBtn && loadMoreBtn.offsetParent !== null) {
+            loadMoreBtn.classList.add('focused');
+            loadMoreBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            loadMoreBtn.focus();
+        }
+        return;
+    }
+    
+    if (index < 0) index = 0;
+    
+    selectedPaperIndex = index;
+    
+    // Add selection to new paper
+    const selectedCard = visiblePapers[selectedPaperIndex];
+    if (selectedCard) {
+        selectedCard.classList.add('selected');
+        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+}
+
+function getSelectedPaper() {
+    updateVisiblePapers();
+    if (selectedPaperIndex >= 0 && selectedPaperIndex < visiblePapers.length) {
+        return visiblePapers[selectedPaperIndex];
+    }
+    return null;
+}
+
+function getSelectedPaperData() {
+    const card = getSelectedPaper();
+    if (!card) return null;
+    
+    // Find the paper in paperList by matching the URL
+    const titleLink = card.querySelector('.papertitle');
+    if (!titleLink) return null;
+    
+    const href = titleLink.href;
+    const idMatch = href.match(/literature\/(\d+)/);
+    if (!idMatch) return null;
+    
+    const paperId = idMatch[1];
+    return paperList.find(p => p.id === paperId);
+}
+
+function handleKeyboardNavigation(event) {
+    // Don't handle if user is typing in an input
+    if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+        return;
+    }
+    
+    const key = event.key.toLowerCase();
+    
+    switch (key) {
+        case 'j': // Next paper
+            event.preventDefault();
+            selectPaper(selectedPaperIndex + 1);
+            break;
+            
+        case 'k': // Previous paper
+            event.preventDefault();
+            selectPaper(selectedPaperIndex - 1);
+            break;
+            
+        case 's': // Bookmark/unbookmark
+            event.preventDefault();
+            const paperToBookmark = getSelectedPaperData();
+            if (paperToBookmark) {
+                if (isInReadingList(paperToBookmark.id)) {
+                    removeFromReadingList(paperToBookmark.id);
+                } else {
+                    addToReadingList(paperToBookmark);
+                }
+            }
+            break;
+            
+        case 'm': // Mark as read/unread
+            event.preventDefault();
+            const paperToMark = getSelectedPaperData();
+            if (paperToMark && isInReadingList(paperToMark.id)) {
+                toggleReadStatus(paperToMark.id);
+            }
+            break;
+            
+        case 'enter': // Open paper
+            event.preventDefault();
+            const selectedCard = getSelectedPaper();
+            if (selectedCard) {
+                const link = selectedCard.querySelector('.papertitle');
+                if (link) {
+                    window.open(link.href, '_blank');
+                }
+            }
+            break;
+            
+        case 'g': // Go to top (gg in vim, but single g for simplicity)
+            event.preventDefault();
+            selectPaper(0);
+            break;
+            
+        case 'shift': // Ignore modifier keys
+            break;
+            
+        case 'g': // G goes to bottom when shift is pressed
+            if (event.shiftKey) {
+                event.preventDefault();
+                updateVisiblePapers();
+                selectPaper(visiblePapers.length - 1);
+            }
+            break;
+            
+        case '?': // Show help
+            event.preventDefault();
+            showKeyboardHelp();
+            break;
+    }
+}
+
+function showKeyboardHelp() {
+    const existingHelp = document.getElementById('keyboardHelp');
+    if (existingHelp) {
+        existingHelp.remove();
+        return;
+    }
+    
+    const helpDiv = document.createElement('div');
+    helpDiv.id = 'keyboardHelp';
+    helpDiv.className = 'keyboard-help';
+    helpDiv.innerHTML = `
+        <div class="keyboard-help-content">
+            <h3>Keyboard Shortcuts</h3>
+            <ul>
+                <li><kbd>j</kbd> Next paper</li>
+                <li><kbd>k</kbd> Previous paper</li>
+                <li><kbd>s</kbd> Bookmark/unbookmark paper</li>
+                <li><kbd>m</kbd> Mark as read/unread</li>
+                <li><kbd>Enter</kbd> Open paper in new tab</li>
+                <li><kbd>g</kbd> Go to first paper</li>
+                <li><kbd>G</kbd> Go to last paper</li>
+                <li><kbd>?</kbd> Toggle this help</li>
+            </ul>
+            <button onclick="this.parentElement.parentElement.remove()" class="btn btn-secondary">Close</button>
+        </div>
+    `;
+    document.body.appendChild(helpDiv);
+}
+
+// Initialize keyboard navigation
+document.addEventListener('keydown', handleKeyboardNavigation);
