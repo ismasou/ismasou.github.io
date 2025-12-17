@@ -477,15 +477,15 @@ function listPapers(hits) {
         LI.appendChild(headerDiv);
         LI.appendChild(authoP);
         
-        const hideAuthor = document.getElementById("showAuthor").checked;
-        const hideCollab = document.getElementById("showCollab").checked;
+        const hideAuthorChecked = document.getElementById("showAuthor").checked;
+        const hideCollabChecked = document.getElementById("showCollab").checked;
         
         if (IsCollab) {
             LI.className = "collabPapers";
-            LI.style.display = hideCollab ? "block" : "none";
+            if (!hideCollabChecked) LI.classList.add("hidden");
         } else {
             LI.className = "authorPapers";
-            LI.style.display = hideAuthor ? "block" : "none";
+            if (!hideAuthorChecked) LI.classList.add("hidden");
         }
         
         authorUl.appendChild(LI);
@@ -663,18 +663,36 @@ function showSearch(el) {
 function hideAuthor(el) {
     let ShowAuthor = el.checked;
     const authorPapers = document.getElementsByClassName("authorPapers");
+    const authorHeader = document.querySelector(".author-column-header");
     
     for (let i = 0; i < authorPapers.length; i++) {
-        authorPapers[i].style.display = ShowAuthor ? "block" : "none";
+        if (ShowAuthor) {
+            authorPapers[i].classList.remove("hidden");
+        } else {
+            authorPapers[i].classList.add("hidden");
+        }
+    }
+    
+    if (authorHeader) {
+        authorHeader.style.opacity = ShowAuthor ? "1" : "0.3";
     }
 }
 
 function hideCollab(el) {
     let ShowCollab = el.checked;
     const collabPapers = document.getElementsByClassName("collabPapers");
+    const collabHeader = document.querySelector(".collab-column-header");
     
     for (let i = 0; i < collabPapers.length; i++) {
-        collabPapers[i].style.display = ShowCollab ? "block" : "none";
+        if (ShowCollab) {
+            collabPapers[i].classList.remove("hidden");
+        } else {
+            collabPapers[i].classList.add("hidden");
+        }
+    }
+    
+    if (collabHeader) {
+        collabHeader.style.opacity = ShowCollab ? "1" : "0.3";
     }
 }
 

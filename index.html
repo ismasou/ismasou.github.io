@@ -102,15 +102,25 @@
               <h2>Recent Papers</h2>
               <div class="filter-options">
                 <label class="checkbox-label">
-                  <input type="checkbox" id="showAuthor" name="showAuthor" value="showAuthor" onclick="hideAuthor(this)">
+                  <input type="checkbox" id="showAuthor" name="showAuthor" value="showAuthor" onclick="hideAuthor(this)" checked>
                   <span class="checkbox-custom"></span>
-                  Show Author Papers
+                  Author Papers
                 </label>
                 <label class="checkbox-label">
-                  <input type="checkbox" id="showCollab" name="showCollab" value="showCollab" onclick="hideCollab(this)">
+                  <input type="checkbox" id="showCollab" name="showCollab" value="showCollab" onclick="hideCollab(this)" checked>
                   <span class="checkbox-custom"></span>
-                  Show Collaboration Papers
+                  Collaboration Papers
                 </label>
+              </div>
+            </div>
+
+            <!-- Column Headers -->
+            <div class="papers-columns-header">
+              <div class="column-header author-column-header">
+                <span class="column-icon">○</span> Author Papers
+              </div>
+              <div class="column-header collab-column-header">
+                <span class="column-icon">◉</span> Collaboration Papers
               </div>
             </div>
             
