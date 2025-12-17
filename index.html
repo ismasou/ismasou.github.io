@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- Make Mathjax use single dollar signs -->
     <script type="text/javascript">
       window.MathJax = {
         tex: {
@@ -17,47 +16,109 @@
         jax: ["input/TeX", "output/SVG"],
       };
     </script>
-    <!-- <script type="text/javascript" id="MathJax-script" async -->
-    <!--     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"> -->
-    <!-- </script> -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
   </head>
   <body>
-    <h1>Inspirehep News</h1>
-
-    <div class="subscriptions" >
-    <h2 id="SubTitle" class="up" onclick="showSubs(this)">Subscriptions</h2>
-    <div id = "subscriptions" style="display:none">
-    </div>
-    </div>
-
-    <div class="authorSearch">
-      <h2 id="AuthTitle" class="up" onclick="showSearch(this)">Author Search</h2>
-      <div id = "authorSearch" style="display:none">
-        <input type="checkbox" id="collab" name="collab" value="collab">
-        <label for="collab">Collaboration</label><br>
-        <input type="file" id="selectFiles" value="Import" />
-        <button id="importAuthorList" onclick="importAuthorList(this)">Import</button>
-        <button onclick="exportAuthorList(this)">Export</button>
-        <br>
-        <br>
-        <input type="text" id="authorSearchField">
-        <button onclick="searchAuthor()">Search</button>
-        <div id = "authorRes" > </div>
-      </div></div>
-
-    <div class="papers">
-        <h2>Recent Papers</h2>
-      <input type="checkbox" id="showAuthor" name="showAuthor" value="showAuthor" onclick="hideAuthor(this)">
-        <label for="showAuthor">
-        Show Subscribed Authors
-        </label>
-      <input type="checkbox" id="showCollab" name="showCollab" value="showCollab" onclick="hideCollab(this)">
-        <label for="showCollab">
-        Show Collaboration
-        </label>
-        <div id = "papers">
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1>Inspirehep News</h1>
+          <p class="subtitle">Track papers from your favorite authors and collaborations</p>
         </div>
+      </header>
+
+      <!-- Main content area -->
+      <main class="main-content">
+        <!-- Sidebar with subscriptions and search -->
+        <aside class="sidebar">
+          <!-- Subscriptions Section -->
+          <section class="card subscriptions">
+            <h2 id="SubTitle" class="section-header up" onclick="showSubs(this)">
+              <span class="icon">▶</span>
+              Subscriptions
+              <span class="badge" id="subCount">0</span>
+            </h2>
+            <div id="subscriptions" class="section-content" style="display:none">
+              <div id="subList" class="sub-list"></div>
+              <p class="empty-state" id="emptySubState">No subscriptions yet. Search for authors below to add some.</p>
+            </div>
+          </section>
+
+          <!-- Author Search Section -->
+          <section class="card author-search">
+            <h2 id="AuthTitle" class="section-header up" onclick="showSearch(this)">
+              <span class="icon">▶</span>
+              Author Search
+            </h2>
+            <div id="authorSearch" class="section-content" style="display:none">
+              <div class="search-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="collab" name="collab" value="collab">
+                  <span class="checkbox-custom"></span>
+                  Search Collaborations
+                </label>
+              </div>
+              
+              <div class="search-box">
+                <input type="text" id="authorSearchField" placeholder="Enter author name...">
+                <button onclick="searchAuthor()" class="btn btn-primary">Search</button>
+              </div>
+
+              <div class="import-export">
+                <input type="file" id="selectFiles" class="file-input" />
+                <label for="selectFiles" class="btn btn-secondary file-label">Choose File</label>
+                <button id="importAuthorList" onclick="importAuthorList(this)" class="btn btn-secondary">Import</button>
+                <button onclick="exportAuthorList(this)" class="btn btn-secondary">Export</button>
+              </div>
+
+              <div id="authorRes" class="search-results"></div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Papers Section -->
+        <section class="papers-section">
+          <div class="card">
+            <div class="papers-header">
+              <h2>Recent Papers</h2>
+              <div class="filter-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="showAuthor" name="showAuthor" value="showAuthor" onclick="hideAuthor(this)">
+                  <span class="checkbox-custom"></span>
+                  Show Author Papers
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="showCollab" name="showCollab" value="showCollab" onclick="hideCollab(this)">
+                  <span class="checkbox-custom"></span>
+                  Show Collaboration Papers
+                </label>
+              </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+              <div class="spinner"></div>
+              <p>Fetching papers...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyPapersState" class="empty-state-large">
+              <span class="empty-icon">📚</span>
+              <h3>No papers to display</h3>
+              <p>Subscribe to authors or collaborations to see their recent papers here.</p>
+            </div>
+
+            <!-- Papers List -->
+            <div id="papers" class="papers-grid"></div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>Powered by <a href="https://inspirehep.net" target="_blank">INSPIRE-HEP</a></p>
+      </footer>
     </div>
     <script src="script.js"></script>
   </body>
