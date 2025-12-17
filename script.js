@@ -308,7 +308,7 @@ if (input) {
 // Paper Management
 // ==========================================================================
 
-function addPaper(data) {
+function addPaper(data, isFromCollab = false, collabName = "") {
     let n = 0;
     while (lock) {
         setTimeout(10);
@@ -335,16 +335,26 @@ function addPaper(data) {
             continue;
         }
         
-        let notThere = true;
+        let existingIndex = -1;
         for (let i = 0; i < paperList.length; i++) {
             if (paperList[i]["id"] == id) {
-                notThere = false;
+                existingIndex = i;
                 break;
             }
         }
         
-        if (notThere) {
-            paperList.push(Papers[j]);
+        if (existingIndex === -1) {
+            // New paper - add with collab info if from collab search
+            const paperEntry = Papers[j];
+            if (isFromCollab) {
+                paperEntry._isFromCollab = true;
+                paperEntry._collabName = collabName;
+            }
+            paperList.push(paperEntry);
+        } else if (isFromCollab) {
+            // Paper exists but mark it as also from collab
+            paperList[existingIndex]._isFromCollab = true;
+            paperList[existingIndex]._collabName = collabName;
         }
     }
 
@@ -403,10 +413,14 @@ function listPapers(hits) {
             paperDate = dateNew;
         }
 
-        // Check Collaboration
+        // Check Collaboration - use our flag or fall back to metadata
         let IsCollab = false;
         let Collaboration = "";
-        if (hits[i]["metadata"]["accelerator_experiments"] != undefined) {
+        
+        if (hits[i]._isFromCollab) {
+            IsCollab = true;
+            Collaboration = hits[i]._collabName;
+        } else if (hits[i]["metadata"]["accelerator_experiments"] != undefined) {
             IsCollab = true;
             Collaboration = hits[i]["metadata"]["accelerator_experiments"][0]["legacy_name"];
         }
@@ -525,7 +539,7 @@ function searchPaper(author) {
     
     fetch(`https://inspirehep.net/api/literature?sort=mostrecent&size=5&page=1&q=author%3A${authorId}`)
         .then((response) => response.json())
-        .then((json) => addPaper(json))
+        .then((json) => addPaper(json, false))
         .catch((error) => {
             console.error("Error fetching papers:", error);
             pendingRequests--;
@@ -536,7 +550,7 @@ function searchPaper(author) {
 function searchPaperCollab(collab) {
     fetch(`https://inspirehep.net/api/literature?sort=mostrecent&size=5&page=1&q=collaboration%3A${collab["collaboration"]["value"]}`)
         .then((response) => response.json())
-        .then((json) => addPaper(json))
+        .then((json) => addPaper(json, true, collab["collaboration"]["value"]))
         .catch((error) => {
             console.error("Error fetching papers:", error);
             pendingRequests--;
