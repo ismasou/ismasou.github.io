@@ -606,22 +606,18 @@ input[type=text]::placeholder {
 }
 
 .papers-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: start;
+    display: block;
 }
 
 .papers-grid h3 {
     margin-top: 1rem;
-    grid-column: 1 / -1;
 }
 
 .papers-grid h3:first-child {
     margin-top: 0;
 }
 
-/* Legacy ul-based grid */
+/* ul-based grid for papers */
 .papers-grid > ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -632,6 +628,8 @@ input[type=text]::placeholder {
 
 .papers-grid > ul > h3 {
     grid-column: 1 / -1;
+    margin: 0;
+    padding-top: 0.5rem;
 }
 
 .papers-grid > ul > li.authorPapers {
@@ -651,7 +649,6 @@ input[type=text]::placeholder {
         display: none;
     }
     
-    .papers-grid,
     .papers-grid > ul {
         grid-template-columns: 1fr;
     }
